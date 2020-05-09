@@ -119,16 +119,19 @@ int sample_next_action(int size,int available_acts[])
 int main()
 {
     int i, j;
-    int initial_state = 4, final_state = 7;
+    int initial_state, final_state = 7;
+    int current_state, size_av_actions, action;
+    double final_max = 0.0, scores[100000], rMatrix[8][8], score = 0.0;
+    
     printf("Enter the initial state: ");
     scanf("%d",&initial_state);
-    int current_state, size_av_actions, action;
-
-    double final_max = 0.0, scores[100000], rMatrix[8][8], score = 0.0;
+    
     for (int i = 0; i < RAN_LIM; i++)
     {
         ran[i] = rand() % 8;
     }
+
+
     for (i = 0; i < 8; i++)
     {
         for (j = 0; j < 8; j++)
@@ -153,13 +156,13 @@ int main()
         }
     }
 
+
     printf("\nPoints Matrix : \n");
     for (i = 0; i < 8; i++)
     {
         for (j = 0; j < 8; j++)
         {
-                printf("%f\t",rMatrix[i][j]);
-
+            printf("%f\t",rMatrix[i][j]);
         }
         printf("\n");
     }
@@ -168,7 +171,7 @@ int main()
     printf("%f", rMatrix[7][7]);
     
     
-    // Training
+    // Training the Q Matrix
     for (i = 0; i < 500; i++)
     {
 
@@ -183,8 +186,8 @@ int main()
         printf("\nScore : %f", score);
     }
 
-    //Finding the Max
 
+    //Finding the Max
     for (i = 0; i < 8; i++)
     {
         for (j = 0; j < 8; j++)
@@ -207,36 +210,51 @@ int main()
         printf("\n");
     }
 
+    
     int curr_state=initial_state;
     int visited[8]={0,0,0,0,0,0,0,0};
     int no_way=0;
+    int row_max=0,max_ind=0;
+
     printf("Path: \n");
     while (visited[final_state]!=1)
     {
         printf("%d-> ",curr_state);
-        int row_max=0,max_ind=0;
-        for(int i=0;i<8;i++){
-            if(visited[i]==0){
-                if(qMatrix[curr_state][i]>row_max){
+        row_max=0;
+        max_ind=0;    
+        
+        for(int i=0;i<8;i++)
+        {
+            if(visited[i]==0)
+            {
+                if(qMatrix[curr_state][i]>row_max)
+                {
                     max_ind=i;
                     row_max=qMatrix[curr_state][i];
                 }
             }
         }
+
         curr_state=max_ind;
         visited[max_ind]=1;
-        if(row_max==0){
+        if(row_max==0)
+        {
             no_way=1;
             break;
         }
-        if(curr_state==final_state){
+        
+        if(curr_state==final_state)
+        {
             break;
         }
     }
-    if(no_way==1){
+    
+    if(no_way==1)
+    {
         printf("%d | There's no way after this\n");
     }
-    else{
+    else
+    {
         printf("%d is the shortest path\n",curr_state);
     }
     
