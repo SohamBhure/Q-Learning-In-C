@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #define RAN_LIM 500000
 
 double qMatrix[8][8], rMatrix[8][8], gammaLR = 0.8;
@@ -16,9 +15,7 @@ void printArray(double a[][8])
     {
         for (j = 0; j < 8; j++)
         {
-            //if(i==7 && j==7){
-                printf("%f\t", (a[i][j]));
-            //}
+            printf("%f\t", (a[i][j]));
         }
         printf("\n");
     }
@@ -26,8 +23,6 @@ void printArray(double a[][8])
 
 int returnRandom()
 {
-    //int num = (rand() % (upper - lower + 1)) + lower;
-    //printf("Random: %d\n",ran[ran_top]);
     return ran[ran_top++];
 }
 
@@ -170,24 +165,6 @@ int main()
     }
     printf("\n\n\n");
 
-    //printArray(rMatrix);
-    /*
-    size_av_actions = available_actions(initial_state);
-
-       
-    for(i=0; i<size_av_actions; i++)
-    {
-        printf("%d\t", available_acts[i]);
-    }
-    
-
-    action = sample_next_action(size_av_actions);
-
-    score = update(initial_state, action);
-    */
-
-
-    //srand(time(NULL));
     printf("%f", rMatrix[7][7]);
     
     
@@ -196,15 +173,13 @@ int main()
     {
 
         current_state = returnRandom();
-        //current_state = rand();
-        //current_state = current_state % 8;
-        //printf("\n\nCurrent State: %d\t", current_state);
         size_av_actions = available_actions(current_state,available_acts,rMatrix);
         action = sample_next_action(size_av_actions,available_acts);
+        
         //printf("\nNext Step: %d\n", action);
         score = update(current_state, action,rMatrix,qMatrix);
         scores[i] = score;
-        //printArray();
+        
         printf("\nScore : %f", score);
     }
 
